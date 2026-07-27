@@ -1,0 +1,24 @@
+{
+  "name": "expence_management_node",
+  "version": "1.0.0",
+  "description": "Expensess ManageMent",
+  "keywords": [
+    "Expenses",
+    "Project"
+  ],
+  "homepage": "https://github.com/Dushyanth5121/expence_management_node#readme",
+  "bugs": {
+    "url": "https://github.com/Dushyanth5121/expence_management_node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dushyanth5121/expence_management_node.git"
+  },
+  "license": "ISC",
+  "author": "Dushyanth v",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  }
+}
