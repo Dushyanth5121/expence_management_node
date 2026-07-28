@@ -1,24 +1,30 @@
 {
-  "name": "expence_management_node",
+  "name": "company-management-api",
   "version": "1.0.0",
-  "description": "Expensess ManageMent",
-  "keywords": [
-    "Expenses",
-    "Project"
-  ],
-  "homepage": "https://github.com/Dushyanth5121/expence_management_node#readme",
-  "bugs": {
-    "url": "https://github.com/Dushyanth5121/expence_management_node/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Dushyanth5121/expence_management_node.git"
-  },
-  "license": "ISC",
-  "author": "Dushyanth v",
-  "type": "commonjs",
-  "main": "index.js",
+  "description": "Company Management System with Authentication",
+  "main": "server.js",
   "scripts": {
-    "test": "node index.js"
+        "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prisma": "^5.0.0"
   }
 }
