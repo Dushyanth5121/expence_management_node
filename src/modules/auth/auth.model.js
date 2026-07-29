@@ -64,9 +64,20 @@ class AuthModel {
    */
   async updateUser(id, updateData) {
     try {
+      // Only include fields that are defined
+      const data = {};
+      
+      if (updateData.email !== undefined) data.email = updateData.email;
+      if (updateData.first_name !== undefined) data.first_name = updateData.first_name;
+      if (updateData.last_name !== undefined) data.last_name = updateData.last_name;
+      if (updateData.password_hash !== undefined) data.password_hash = updateData.password_hash;
+      if (updateData.is_active !== undefined) data.is_active = updateData.is_active;
+      if (updateData.role !== undefined) data.role = updateData.role;
+      if (updateData.last_login !== undefined) data.last_login = updateData.last_login;
+
       return await prisma.user.update({
         where: { id },
-        data: updateData
+        data: data
       });
     } catch (error) {
       throw new Error(`Error updating user: ${error.message}`);

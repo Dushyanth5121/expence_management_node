@@ -66,9 +66,43 @@ class AuthService {
   }
 
   async updateProfile(userId, updateData) {
-    // Remove sensitive fields
-    const { password_hash, id, ...safeUpdateData } = updateData;
+    // The updateData already has first_name and last_name (with underscores)
+    // from the validation in routes
+    const safeUpdateData = {};
     
+    // Map fields correctly - they already come as first_name and last_name
+    if (updateData.first_name !== undefined) {
+      safeUpdateData.first_name = updateData.first_name.trim();
+    }
+    if (updateData.last_name !== undefined) {
+      safeUpdateData.last_name = updateData.last_name.trim();
+    }
+    if (updateData.email !== undefined) {
+      safeUpdateData.email = updateData.email.trim().toLowerCase();
+    }
+    
+    // Remove any sensitive fields that might have been sent
+    delete safeUpdateData.password_hash;
+    delete safeUpdateData.id;
+    delete safeUpdateData.role;
+    delete safeUpdateData.created_at;
+    delete safeUpdateData.updated_at;
+    delete safeUpdateData.last_login;
+    delete safeUpdateData.is_active;
+
+    // If email is being changed, check if it already exists
+    if (safeUpdateData.email) {
+      const existingUser = await AuthModel.findByEmail(safeUpdateData.email);
+      if (existingUser && existingUser.id !== userId) {
+        throw new AppError('Email already in use by another account', 400);
+      }
+    }
+
+    // If no fields to update, throw error
+    if (Object.keys(safeUpdateData).length === 0) {
+      throw new AppError('No valid fields to update', 400);
+    }
+
     const user = await AuthModel.updateUser(userId, safeUpdateData);
     return this.sanitizeUser(user);
   }
