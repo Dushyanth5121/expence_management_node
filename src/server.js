@@ -16,7 +16,7 @@ const startServer = async () => {
   try {
     // Test database connection
     await prisma.$connect();
-    logger.info('✅ Database connected successfully');
+    logger.info('✅ Database connected successfully !..');
 
     const server = app.listen(PORT, () => {
       logger.info(`🚀 Server running on http://localhost:${PORT}`);
