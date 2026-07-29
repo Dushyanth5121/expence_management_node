@@ -11,8 +11,8 @@ const authRoutes = require('./modules/auth/auth.routes');
 const categoryRoutes = require('./modules/category/category.routes');
 const expenseRoutes = require('./modules/expenses/expense.routes');
 const searchRoutes = require('./modules/search/search.routes');
-// Import middleware
-const { errorHandler } = require('./shared/middleware/error.middleware');
+const dashboardRoutes = require('./modules/dashboard/dashboard.routes');
+
 
 const app = express();
 
@@ -25,17 +25,14 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(morgan('dev'));
 
 // API routes
-app.use('/api/auth', authRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/expenses', expenseRoutes);
-// app.js - Add search routes
 
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/expenses', expenseRoutes);
-app.use('/api/search', searchRoutes);
+app.use('/api/search', searchRoutes); 
 
 app.use((req, res) => {
   res.status(404).json({
@@ -44,7 +41,7 @@ app.use((req, res) => {
   });
 });
 
-// Error handler
-app.use(errorHandler);
+
+// app.use(errorHandler);
 
 module.exports = app;
