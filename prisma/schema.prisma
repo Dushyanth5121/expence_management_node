@@ -25,5 +25,46 @@ model User {
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
 
+  categories Category[]
+  Expense    Expense[]
+
   @@map("users")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  user_id     String
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  user    User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Expense Expense[]
+
+  @@unique([user_id, name])
+  @@index([user_id])
+  @@index([is_active])
+  @@map("categories")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  amount      Float
+  description String?
+  date        DateTime @default(now())
+  category_id String
+  user_id     String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([category_id])
+  @@index([date])
+  @@map("expenses")
 }

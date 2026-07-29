@@ -8,6 +8,7 @@ require('dotenv').config();
 
 // Import routes
 const authRoutes = require('./modules/auth/auth.routes');
+const categoryRoutes = require('./modules/category/category.routes');
 
 // Import middleware
 const { errorHandler } = require('./shared/middleware/error.middleware');
@@ -24,6 +25,7 @@ app.use(morgan('dev'));
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // 404 handler
 app.use((req, res) => {
