@@ -40,9 +40,6 @@ class AuthController {
   });
 
   logout = catchAsync(async (req, res) => {
-    // Since we're using stateless JWT, logout is handled client-side
-    // The client should remove the token from storage
-    // This endpoint just acknowledges the logout request
     res.json({
       success: true,
       message: 'Logged out successfully'

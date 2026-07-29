@@ -8,6 +8,11 @@ class AuthService {
   async register(userData) {
     const { email, password, firstName, lastName } = userData;
 
+    // Validate required fields
+    if (!email || !password || !firstName || !lastName) {
+      throw new AppError('All fields are required', 400);
+    }
+
     // Check if user exists
     const exists = await AuthModel.userExists(email);
     if (exists) {
@@ -17,12 +22,12 @@ class AuthService {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
+    // Create user - Note: Prisma schema uses first_name and last_name (with underscores)
     const user = await AuthModel.createUser({
-      email,
+      email: email.trim().toLowerCase(),
       password_hash: hashedPassword,
-      first_name: firstName,
-      last_name: lastName
+      first_name: firstName.trim(),
+      last_name: lastName.trim()
     });
 
     // Generate tokens
@@ -36,7 +41,7 @@ class AuthService {
 
   async login(email, password) {
     // Find user with password
-    const user = await AuthModel.findByEmail(email);
+    const user = await AuthModel.findByEmail(email.trim().toLowerCase());
     
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
       throw new AppError('Invalid email or password', 401);
@@ -66,11 +71,9 @@ class AuthService {
   }
 
   async updateProfile(userId, updateData) {
-    // The updateData already has first_name and last_name (with underscores)
-    // from the validation in routes
     const safeUpdateData = {};
     
-    // Map fields correctly - they already come as first_name and last_name
+    // Handle fields - updateProfile validation uses first_name and last_name (with underscores)
     if (updateData.first_name !== undefined) {
       safeUpdateData.first_name = updateData.first_name.trim();
     }
@@ -80,15 +83,6 @@ class AuthService {
     if (updateData.email !== undefined) {
       safeUpdateData.email = updateData.email.trim().toLowerCase();
     }
-    
-    // Remove any sensitive fields that might have been sent
-    delete safeUpdateData.password_hash;
-    delete safeUpdateData.id;
-    delete safeUpdateData.role;
-    delete safeUpdateData.created_at;
-    delete safeUpdateData.updated_at;
-    delete safeUpdateData.last_login;
-    delete safeUpdateData.is_active;
 
     // If email is being changed, check if it already exists
     if (safeUpdateData.email) {

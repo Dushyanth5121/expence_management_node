@@ -64,7 +64,6 @@ class AuthModel {
    */
   async updateUser(id, updateData) {
     try {
-      // Only include fields that are defined
       const data = {};
       
       if (updateData.email !== undefined) data.email = updateData.email;
