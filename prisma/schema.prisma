@@ -13,6 +13,14 @@ enum Role {
   moderator
 }
 
+enum PaymentMethod {
+  Cash
+  Card
+  UPI
+  BankTransfer
+  Other
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -25,24 +33,24 @@ model User {
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
 
-  categories Category[]
-  Expense    Expense[]
+  categories    Category[]
+  expenses      Expense[]
 
   @@map("users")
 }
 
 model Category {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
   user_id     String
-  is_active   Boolean   @default(true)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   deleted_at  DateTime?
 
-  user    User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Expense Expense[]
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  expenses    Expense[]
 
   @@unique([user_id, name])
   @@index([user_id])
@@ -51,20 +59,23 @@ model Category {
 }
 
 model Expense {
-  id          String   @id @default(cuid())
-  amount      Float
-  description String?
-  date        DateTime @default(now())
-  category_id String
-  user_id     String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id              String        @id @default(cuid())
+  title           String
+  amount          Float
+  category_id     String
+  expense_date    DateTime      @default(now())
+  payment_method  PaymentMethod @default(Other)
+  description     String?
+  user_id         String
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 
-  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
-  user     User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  category        Category      @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  user            User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
   @@index([category_id])
-  @@index([date])
+  @@index([expense_date])
+  @@index([payment_method])
   @@map("expenses")
 }
