@@ -1,3 +1,4 @@
+// shared/middleware/auth.middleware.js
 const jwt = require('jsonwebtoken');
 const { AppError } = require('../utils/helpers');
 const AuthModel = require('../../modules/auth/auth.model');

@@ -1,3 +1,4 @@
+// modules/auth/auth.routes.js
 const router = require('express').Router();
 const AuthController = require('./auth.controller');
 const { validate } = require('../../shared/middleware/validation.middleware');
@@ -32,11 +33,7 @@ const updateProfileValidation = [
 router.post('/register', validate(registerValidation), AuthController.register);
 router.post('/login', validate(loginValidation), AuthController.login);
 router.get('/get-profile', authMiddleware, AuthController.getProfile);
-
-
-
-
-
 router.put('/update-profile', authMiddleware, validate(updateProfileValidation), AuthController.updateProfile);
+router.get('/logout', authMiddleware, AuthController.logout);  // Changed from POST to GET
 
 module.exports = router;

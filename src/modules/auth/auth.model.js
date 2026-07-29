@@ -1,3 +1,4 @@
+// modules/auth/auth.model.js
 const prisma = require('../../shared/config/prisma');
 
 class AuthModel {
