@@ -10,7 +10,7 @@ require('dotenv').config();
 const authRoutes = require('./modules/auth/auth.routes');
 const categoryRoutes = require('./modules/category/category.routes');
 const expenseRoutes = require('./modules/expenses/expense.routes');
-
+const searchRoutes = require('./modules/search/search.routes');
 // Import middleware
 const { errorHandler } = require('./shared/middleware/error.middleware');
 
@@ -28,8 +28,15 @@ app.use(morgan('dev'));
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/expenses', expenseRoutes);
+// app.js - Add search routes
 
-// 404 handler
+
+// API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/search', searchRoutes);
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
