@@ -67,36 +67,6 @@ const searchValidation = [
     .isIn(['asc', 'desc'])
     .withMessage('Order by must be asc or desc')
 ];
-
-const filterOptionsValidation = [
-  query('category')
-    .optional()
-    .isBoolean()
-    .withMessage('Category must be boolean'),
-  query('payment_method')
-    .optional()
-    .isBoolean()
-    .withMessage('Payment method must be boolean'),
-  query('date_range')
-    .optional()
-    .isBoolean()
-    .withMessage('Date range must be boolean'),
-  query('amount_range')
-    .optional()
-    .isBoolean()
-    .withMessage('Amount range must be boolean')
-];
-
-const suggestionsValidation = [
-  query('query')
-    .notEmpty()
-    .withMessage('Query is required')
-    .isLength({ min: 2 })
-    .withMessage('Query must be at least 2 characters')
-    .isString()
-    .trim()
-];
-
 // All routes require authentication
 router.use(authMiddleware);
 
@@ -106,29 +76,5 @@ router.get(
   validate(searchValidation),
   SearchController.searchExpenses
 );
-
-// router.get(
-//   '/options',
-//   validate(filterOptionsValidation),
-//   SearchController.getFilterOptions
-// );
-
-// router.get(
-//   '/summary',
-//   validate(searchValidation),
-//   SearchController.getFilteredSummary
-// );
-
-// router.get(
-//   '/suggestions',
-//   validate(suggestionsValidation),
-//   SearchController.getSearchSuggestions
-// );
-
-// router.get(
-//   '/advanced',
-//   validate(searchValidation),
-//   SearchController.advancedSearch
-// );
 
 module.exports = router;
